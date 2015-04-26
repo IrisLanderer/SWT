@@ -2,7 +2,20 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>swt1.ub01a1</groupId>
   <artifactId>1836135</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+ <parent>
+		<groupId>edu.kit.ipd.swt1</groupId>
+		<artifactId>uebungsparent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<repositories>
+		<repository>
+			<id>swt1</id>
+			<name>swt1</name>
+			<url>http://bob.ipd.kit.edu/nexus/content/repositories/swt1/</url>
+		</repository>
+	</repositories>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -17,6 +30,7 @@
 			            <manifest>
 			                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 			                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+			                <mainClass>org.jis.Main</mainClass>
 			            </manifest>
 			        </archive>
 			    </configuration>
@@ -71,10 +85,6 @@
 		</pluginManagement>
 	</build>
 
-	<scm>
-		<connection>scm:git:file:///</connection>
-		<url>scm:git:file:///</url>
-	</scm>
 
 	<dependencyManagement>
 		<dependencies>

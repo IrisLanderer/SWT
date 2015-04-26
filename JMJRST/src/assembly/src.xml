@@ -7,6 +7,12 @@
 	<formats>
 		<format>zip</format>
 	</formats>
+	<files>
+	<file>
+	<source>.gitignore</source>
+	<destName>gitignore.txt</destName>
+	</file>
+	</files>
 	<fileSets>
 		<fileSet>
 			<includes>
