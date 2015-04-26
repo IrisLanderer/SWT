@@ -319,8 +319,7 @@ public class Main extends JFrame {
   /**
    * restart the GUI, after changing the Language
    */
-  public void restart()
-  {
+  public void restart()  {
     this.dispose();
     new Main();
   }
