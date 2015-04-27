@@ -720,7 +720,9 @@ public class Generator {
   public BufferedImage rotateImage(BufferedImage image, double rotate)
   {
     if (rotate == 0) return image;
-
+    if (image == null) {
+    	throw new IllegalArgumentException("Error, you can't turn an empty image!");
+    }
     AffineTransform transform = new AffineTransform();
 
     // get width and height of the origianl image
