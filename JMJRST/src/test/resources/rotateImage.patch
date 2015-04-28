@@ -1,0 +1,15 @@
+diff --git a/JMJRST/src/main/java/org/jis/generator/Generator.java b/JMJRST/src/main/java/org/jis/generator/Generator.java
+index 19313eb..f030e2b 100644
+--- a/JMJRST/src/main/java/org/jis/generator/Generator.java
++++ b/JMJRST/src/main/java/org/jis/generator/Generator.java
+@@ -720,7 +720,9 @@
+   public BufferedImage rotateImage(BufferedImage image, double rotate)
+   {
+     if (rotate == 0) return image;
+-
++    if (image == null) {
++    	throw new IllegalArgumentException("Error, you can't turn an empty image!");
++    }
+     AffineTransform transform = new AffineTransform();
+ 
+     // get width and height of the origianl image

@@ -5,6 +5,8 @@ import org.junit.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
@@ -19,7 +21,7 @@ public class TestClass {
 
 	private Generator generator;
 	BufferedImage image;
-	
+	BufferedImage rotated;
     
 	
 	@Before
@@ -36,6 +38,17 @@ public class TestClass {
 
 	    
 	    
+	}
+	
+	@After
+	public void tearDown() throws IOException {
+		if (rotated != null) {
+		Date today = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HHmmss_SSS");
+		String date = dateFormat.format(today);
+		File outputfile = new File("target/testData/rotatedPicture_" + date + ".jpg");
+		ImageIO.write(rotated, "jpg", outputfile);
+		}
 	}
 	
 	@Test
@@ -61,7 +74,7 @@ public class TestClass {
 	
 	@Test
 	public void testRotate90degree() {
-		BufferedImage rotated = generator.rotateImage(image, Math.PI*90/180);
+	    rotated = generator.rotateImage(image, Math.PI*90/180);
 		Assert.assertEquals(rotated.getHeight(), image.getWidth());
 		Assert.assertEquals(rotated.getWidth(), image.getHeight());		
 		Assert.assertEquals(rotated.getColorModel(),image.getColorModel());
@@ -70,7 +83,7 @@ public class TestClass {
 	
 	@Test
 	public void testRotate270degree() {
-		BufferedImage rotated = generator.rotateImage(image, Math.PI*270/180);
+		rotated = generator.rotateImage(image, Math.PI*270/180);
 		Assert.assertEquals(rotated.getHeight(), image.getWidth());
 		Assert.assertEquals(rotated.getWidth(), image.getHeight());		
 		Assert.assertEquals(rotated.getColorModel(),image.getColorModel());
