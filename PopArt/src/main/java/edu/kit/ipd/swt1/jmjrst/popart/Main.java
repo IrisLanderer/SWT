@@ -36,7 +36,6 @@ public class Main {
 		}
 		
 		
-		// TODO Hauptklasse implementieren
 		System.out.println(cmd.getOptionValue(CMD_OPTION_PATTERN, "osgw12345"));
 		System.out.println(cmd.getOptionValue(CMD_OPTION_SOURCE_FILE));
 		System.out.println(cmd.getOptionValue(CMD_OPTION_DEST_FILE));
