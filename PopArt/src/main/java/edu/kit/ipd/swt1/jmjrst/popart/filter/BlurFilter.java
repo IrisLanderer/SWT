@@ -10,6 +10,10 @@ import java.awt.image.BufferedImage;
  */
 public class BlurFilter implements ImageFilter {
 
+	public BlurFilter() {
+
+	}
+
 	@Override
 	public BufferedImage applyFilter(BufferedImage image) {
 		int width = image.getWidth();
@@ -17,17 +21,14 @@ public class BlurFilter implements ImageFilter {
 		int[][] pixels = new int[width][height];
 		for (int i = 1; i < width - 1; i++) {
 			for (int j = 1; j < height - 1; j++) {
-				pixels[i][j] = 1
+				pixels[i][j] = (image.getRGB(i - 1, j - 1)
+						+ image.getRGB(i - 1, j + 1)
+						+ image.getRGB(i + 1, j - 1) + image.getRGB(i + 1,
+						j + 1))
 						/ 16
-						* (image.getRGB(i - 1, j - 1)
-								+ image.getRGB(i - 1, j + 1)
-								+ image.getRGB(i + 1, j - 1) + image.getRGB(
-								i + 1, j + 1))
-						+ 1
-						/ 8
-						* (image.getRGB(i - 1, j) + image.getRGB(i, j - 1)
+						+ (image.getRGB(i - 1, j) + image.getRGB(i, j - 1)
 								+ image.getRGB(i, j + 1) + image.getRGB(i + 1,
-								j)) + 1 / 4 * image.getRGB(i, j);
+								j)) / 8 + image.getRGB(i, j) / 4;
 				image.setRGB(i, j, pixels[i][j]);
 			}
 		}
