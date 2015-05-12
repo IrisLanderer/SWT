@@ -1,10 +1,23 @@
 package edu.kit.ipd.swt1.jmjrst.popart;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+
+import edu.kit.ipd.swt1.jmjrst.popart.filter.BlurFilter;
+import edu.kit.ipd.swt1.jmjrst.popart.filter.GrayScaleFilter;
+import edu.kit.ipd.swt1.jmjrst.popart.filter.RGBShift;
+import edu.kit.ipd.swt1.jmjrst.popart.filter.RGBShift.Channel;
+import edu.kit.ipd.swt1.jmjrst.popart.filter.SepiaFilter;
 
 public class Main {
 	private static final String CMD_OPTION_SOURCE_FILE = "s";
@@ -34,12 +47,82 @@ public class Main {
 							+ exception.getMessage());
 			System.exit(1);
 		}
-		
-		
-		System.out.println(cmd.getOptionValue(CMD_OPTION_PATTERN, "osgw12345"));
-		System.out.println(cmd.getOptionValue(CMD_OPTION_SOURCE_FILE));
-		System.out.println(cmd.getOptionValue(CMD_OPTION_DEST_FILE));
-		
+
+		try {
+			BufferedImage image = ImageIO.read(new File(cmd
+					.getOptionValue(CMD_OPTION_SOURCE_FILE)));
+			int width = image.getWidth();
+			int height = image.getHeight();
+			int type = image.getType();
+			int deltaX = 0;
+			int deltyY = 0;
+			String pattern = cmd
+					.getOptionValue(CMD_OPTION_PATTERN, "osgw12345");
+			BufferedImage collage = null;
+			if (pattern.length() == 4) {
+				collage = new BufferedImage(width * 2, height * 2, type);
+			} else if (pattern.length() == 9) {
+				collage = new BufferedImage(width * 3, height * 3, type);
+			}
+			for (char c : pattern.toCharArray()) {
+				Channel red = Channel.RED;
+				Channel green = Channel.GREEN;
+				Channel blue = Channel.BLUE;
+				image = ImageIO.read(new File(cmd
+						.getOptionValue(CMD_OPTION_SOURCE_FILE)));
+				switch (c) {
+				case 'o':
+					// Originalbild
+					break;
+				case 's':
+					image = new SepiaFilter().applyFilter(image);
+					break;
+				case 'g':
+					image = new GrayScaleFilter().applyFilter(image);
+					break;
+				case 'w':
+					image = new BlurFilter().applyFilter(image);
+					break;
+				case '1':
+					image = new RGBShift(green, blue, red).applyFilter(image);
+					break;
+				case '2':
+					image = new RGBShift(blue, red, green).applyFilter(image);
+					break;
+				case '3':
+					image = new RGBShift(red, blue, green).applyFilter(image);
+					break;
+				case '4':
+					image = new RGBShift(green, red, blue).applyFilter(image);
+					break;
+				case '5':
+					image = new RGBShift(blue, green, red).applyFilter(image);
+					break;
+				default:
+					break;
+				}
+				// wenn noch nicht die Weite erreicht wurde, zeichne das Bild in
+				// dieselbe Spalte
+				// ansonsten wechsel in die nächste Spalte und wieder beginne
+				// ganz links
+				if (deltaX < collage.getWidth()) {
+					collage.createGraphics().drawImage(image, deltaX, deltyY,
+							null);
+					deltaX += width;
+				} else {
+					deltaX = 0;
+					deltyY += height;
+					collage.createGraphics().drawImage(image, deltaX, deltyY,
+							null);
+					deltaX += width;
+				}
+
+			}
+			ImageIO.write(collage, "jpg",
+					new File(cmd.getOptionValue(CMD_OPTION_DEST_FILE)));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -58,21 +141,23 @@ public class Main {
 		Options options = new Options();
 		Option opt;
 
-		opt = new Option(CMD_OPTION_SOURCE_FILE, "sourceFile", true, "Die Ausgangsdatei");
+		opt = new Option(CMD_OPTION_SOURCE_FILE, "sourceFile", true,
+				"Die Ausgangsdatei");
 		opt.setRequired(true);
 		opt.setType(String.class);
 		options.addOption(opt);
 
-		opt = new Option(CMD_OPTION_DEST_FILE, "destFile", true, "Die Zieldatei");
+		opt = new Option(CMD_OPTION_DEST_FILE, "destFile", true,
+				"Die Zieldatei");
 		opt.setRequired(true);
 		opt.setType(String.class);
 		options.addOption(opt);
 
-		opt = new Option(CMD_OPTION_PATTERN, "pattern", true, "Das Muster (default: osgw12345)");
+		opt = new Option(CMD_OPTION_PATTERN, "pattern", true,
+				"Das Muster (default: osgw12345)");
 		opt.setRequired(false);
 		opt.setType(String.class);
 		options.addOption(opt);
-
 
 		CommandLineParser parser = new BasicParser();
 		CommandLine line = null;

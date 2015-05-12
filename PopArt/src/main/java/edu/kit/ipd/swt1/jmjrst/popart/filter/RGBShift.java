@@ -66,13 +66,17 @@ public class RGBShift implements ImageFilter {
 				int green = (pixel >> 8) & 0xff;
 				int blue = (pixel) & 0xff;
 
+				int redValue = red;
+				int greenValue = green;
+				int blueValue = blue;
+
 				// set new red channel
 				switch (this.red) {
 				case BLUE:
-					red = blue;
+					redValue = blue;
 					break;
 				case GREEN:
-					red = green;
+					redValue = green;
 					break;
 				case RED:
 				default:
@@ -82,10 +86,10 @@ public class RGBShift implements ImageFilter {
 				// set new green channel
 				switch (this.green) {
 				case RED:
-					green = red;
+					greenValue = red;
 					break;
 				case BLUE:
-					green = blue;
+					greenValue = blue;
 					break;
 				case GREEN:
 				default:
@@ -95,17 +99,18 @@ public class RGBShift implements ImageFilter {
 				// set new blue channel
 				switch (this.blue) {
 				case RED:
-					blue = red;
+					blueValue = red;
 					break;
 				case GREEN:
-					blue = green;
+					blueValue = green;
 					break;
 				case BLUE:
 				default:
 					break;
 				}
 
-				Color newColor = new Color(red, green, blue, alpha);
+				Color newColor = new Color(redValue, greenValue, blueValue,
+						alpha);
 				image.setRGB(i, j, newColor.getRGB());
 			}
 

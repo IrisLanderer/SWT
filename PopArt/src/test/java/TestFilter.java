@@ -110,93 +110,143 @@ public class TestFilter {
 	}
 
 	@Test
+	public void testBlueRedGreen() {
+		RGBShift filter = new RGBShift(green, blue, red);
+		filter.applyFilter(image);
+		int width = image.getWidth();
+		int height = image.getHeight();
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				int pixel = originalImage.getRGB(i, j);
+				int oldAlpha = (pixel >> 24) & 0xff;
+				int oldRed = (pixel >> 16) & 0xff;
+				int oldGreen = (pixel >> 8) & 0xff;
+				int oldBlue = (pixel) & 0xff;
+
+				pixel = image.getRGB(i, j);
+				int newAlpha = (pixel >> 24) & 0xff;
+				int newRed = (pixel >> 16) & 0xff;
+				int newGreen = (pixel >> 8) & 0xff;
+				int newBlue = (pixel) & 0xff;
+
+				Assert.assertEquals(oldAlpha, newAlpha);
+				Assert.assertEquals(oldGreen, newRed);
+				Assert.assertEquals(oldBlue, newGreen);
+				Assert.assertEquals(oldRed, newBlue);
+			}
+		}
+	}
+
+	@Test
 	public void testGreenBlueRed() {
 		RGBShift filter = new RGBShift(green, blue, red);
 		filter.applyFilter(image);
 		int width = image.getWidth();
 		int height = image.getHeight();
-		int[][] oldPixel = new int[width][height];
-		int[][] newPixel = new int[width][height];
-		for (int i = 1; i < width - 1; i++) {
-			for (int j = 1; j < height - 1; j++) {
-				oldPixel[i][j] = originalImage.getRGB(i, j);
-				newPixel[i][j] = image.getRGB(i, j);
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				int pixel = originalImage.getRGB(i, j);
+				int oldAlpha = (pixel >> 24) & 0xff;
+				int oldRed = (pixel >> 16) & 0xff;
+				int oldGreen = (pixel >> 8) & 0xff;
+				int oldBlue = (pixel) & 0xff;
 
+				pixel = image.getRGB(i, j);
+				int newAlpha = (pixel >> 24) & 0xff;
+				int newRed = (pixel >> 16) & 0xff;
+				int newGreen = (pixel >> 8) & 0xff;
+				int newBlue = (pixel) & 0xff;
+
+				Assert.assertEquals(oldAlpha, newAlpha);
+				Assert.assertEquals(oldGreen, newBlue);
+				Assert.assertEquals(oldBlue, newRed);
+				Assert.assertEquals(oldRed, newGreen);
 			}
 		}
-		Assert.assertNotEquals(oldPixel, newPixel);
-	}
-
-	@Test
-	public void testBlueRedGreen() {
-		RGBShift filter = new RGBShift(blue, red, green);
-		filter.applyFilter(image);
-		int width = image.getWidth();
-		int height = image.getHeight();
-		int[][] oldPixel = new int[width][height];
-		int[][] newPixel = new int[width][height];
-		for (int i = 1; i < width - 1; i++) {
-			for (int j = 1; j < height - 1; j++) {
-				oldPixel[i][j] = originalImage.getRGB(i, j);
-				newPixel[i][j] = image.getRGB(i, j);
-
-			}
-		}
-		Assert.assertNotEquals(oldPixel, newPixel);
 	}
 
 	@Test
 	public void testRedBlueGreen() {
-		RGBShift filter = new RGBShift(red, blue, green);
+		RGBShift filter = new RGBShift(green, blue, red);
 		filter.applyFilter(image);
 		int width = image.getWidth();
 		int height = image.getHeight();
-		int[][] oldPixel = new int[width][height];
-		int[][] newPixel = new int[width][height];
-		for (int i = 1; i < width - 1; i++) {
-			for (int j = 1; j < height - 1; j++) {
-				oldPixel[i][j] = originalImage.getRGB(i, j);
-				newPixel[i][j] = image.getRGB(i, j);
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				int pixel = originalImage.getRGB(i, j);
+				int oldAlpha = (pixel >> 24) & 0xff;
+				int oldRed = (pixel >> 16) & 0xff;
+				int oldGreen = (pixel >> 8) & 0xff;
+				int oldBlue = (pixel) & 0xff;
 
+				pixel = image.getRGB(i, j);
+				int newAlpha = (pixel >> 24) & 0xff;
+				int newRed = (pixel >> 16) & 0xff;
+				int newGreen = (pixel >> 8) & 0xff;
+				int newBlue = (pixel) & 0xff;
+
+				Assert.assertEquals(oldAlpha, newAlpha);
+				Assert.assertEquals(oldGreen, newBlue);
+				Assert.assertEquals(oldBlue, newBlue);
+				Assert.assertEquals(oldRed, newRed);
 			}
 		}
-		Assert.assertNotEquals(oldPixel, newPixel);
 	}
 
 	@Test
 	public void testGreenRedBlue() {
-		RGBShift filter = new RGBShift(green, red, blue);
+		RGBShift filter = new RGBShift(green, blue, red);
 		filter.applyFilter(image);
 		int width = image.getWidth();
 		int height = image.getHeight();
-		int[][] oldPixel = new int[width][height];
-		int[][] newPixel = new int[width][height];
-		for (int i = 1; i < width - 1; i++) {
-			for (int j = 1; j < height - 1; j++) {
-				oldPixel[i][j] = originalImage.getRGB(i, j);
-				newPixel[i][j] = image.getRGB(i, j);
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				int pixel = originalImage.getRGB(i, j);
+				int oldAlpha = (pixel >> 24) & 0xff;
+				int oldRed = (pixel >> 16) & 0xff;
+				int oldGreen = (pixel >> 8) & 0xff;
+				int oldBlue = (pixel) & 0xff;
 
+				pixel = image.getRGB(i, j);
+				int newAlpha = (pixel >> 24) & 0xff;
+				int newRed = (pixel >> 16) & 0xff;
+				int newGreen = (pixel >> 8) & 0xff;
+				int newBlue = (pixel) & 0xff;
+
+				Assert.assertEquals(oldAlpha, newAlpha);
+				Assert.assertEquals(oldGreen, newRed);
+				Assert.assertEquals(oldBlue, newBlue);
+				Assert.assertEquals(oldRed, newGreen);
 			}
 		}
-		Assert.assertNotEquals(oldPixel, newPixel);
 	}
 
 	@Test
 	public void testBlueGreenRed() {
-		RGBShift filter = new RGBShift(blue, green, red);
+		RGBShift filter = new RGBShift(green, blue, red);
 		filter.applyFilter(image);
 		int width = image.getWidth();
 		int height = image.getHeight();
-		int[][] oldPixel = new int[width][height];
-		int[][] newPixel = new int[width][height];
-		for (int i = 1; i < width - 1; i++) {
-			for (int j = 1; j < height - 1; j++) {
-				oldPixel[i][j] = originalImage.getRGB(i, j);
-				newPixel[i][j] = image.getRGB(i, j);
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				int pixel = originalImage.getRGB(i, j);
+				int oldAlpha = (pixel >> 24) & 0xff;
+				int oldRed = (pixel >> 16) & 0xff;
+				int oldGreen = (pixel >> 8) & 0xff;
+				int oldBlue = (pixel) & 0xff;
 
+				pixel = image.getRGB(i, j);
+				int newAlpha = (pixel >> 24) & 0xff;
+				int newRed = (pixel >> 16) & 0xff;
+				int newGreen = (pixel >> 8) & 0xff;
+				int newBlue = (pixel) & 0xff;
+
+				Assert.assertEquals(oldAlpha, newAlpha);
+				Assert.assertEquals(oldGreen, newGreen);
+				Assert.assertEquals(oldBlue, newRed);
+				Assert.assertEquals(oldRed, newBlue);
 			}
 		}
-		Assert.assertNotEquals(oldPixel, newPixel);
 	}
 
 	@Test
