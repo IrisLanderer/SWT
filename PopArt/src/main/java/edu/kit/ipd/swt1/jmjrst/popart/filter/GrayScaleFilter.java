@@ -37,7 +37,7 @@ public class GrayScaleFilter implements ImageFilter {
 				if (grey > 255) {
 					grey = 255;
 				}
-				Color newColor = new Color(grey, grey, grey);
+				Color newColor = new Color(grey, grey, grey, alpha);
 				image.setRGB(i, j, newColor.getRGB());
 			}
 		}

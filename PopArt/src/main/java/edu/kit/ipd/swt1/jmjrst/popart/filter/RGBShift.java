@@ -1,5 +1,6 @@
 package edu.kit.ipd.swt1.jmjrst.popart.filter;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public class RGBShift implements ImageFilter {
@@ -61,24 +62,55 @@ public class RGBShift implements ImageFilter {
 			for (int j = 0; j < image.getHeight(); j++) {
 				int pixel = image.getRGB(i, j);
 				int alpha = (pixel >> 24) & 0xff;
-				int redPixel = (pixel >> 16) & 0xff;
-				int greenPixel = (pixel >> 8) & 0xff;
-				int bluePixel = (pixel) & 0xff;
-				switch (this) {
-				case ():
-					setChannelShift(green, blue, red);
-				case ():
-					setChannelShift(blue, red, green);
-				case():
-					setChannelShift(red, blue, green);
-				case():
-					setChannelShift(green, red, blue);
-				case():
-					setChannelShift(blue, green, red);
+				int red = (pixel >> 16) & 0xff;
+				int green = (pixel >> 8) & 0xff;
+				int blue = (pixel) & 0xff;
+
+				// set new red channel
+				switch (this.red) {
+				case BLUE:
+					red = blue;
+					break;
+				case GREEN:
+					red = green;
+					break;
+				case RED:
+				default:
+					break;
 				}
+
+				// set new green channel
+				switch (this.green) {
+				case RED:
+					green = red;
+					break;
+				case BLUE:
+					green = blue;
+					break;
+				case GREEN:
+				default:
+					break;
+				}
+
+				// set new blue channel
+				switch (this.blue) {
+				case RED:
+					blue = red;
+					break;
+				case GREEN:
+					blue = green;
+					break;
+				case BLUE:
+				default:
+					break;
+				}
+
+				Color newColor = new Color(red, green, blue, alpha);
+				image.setRGB(i, j, newColor.getRGB());
 			}
-				
+
 		}
 
+		return image;
 	}
 }
