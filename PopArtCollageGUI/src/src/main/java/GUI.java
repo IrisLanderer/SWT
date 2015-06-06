@@ -1,3 +1,8 @@
+package src.main.java;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+
 import javax.swing.JFrame;
 
 public class GUI {
@@ -6,7 +11,9 @@ public class GUI {
 		frame.setSize(800, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Components component = new Components();
-		component.addComponents(frame.getContentPane());
+		Container container = frame.getContentPane();
+		container.add(new CollagePanel(), BorderLayout.WEST);
+		component.addComponents(container);
 		frame.setVisible(true);
 	}
 }
