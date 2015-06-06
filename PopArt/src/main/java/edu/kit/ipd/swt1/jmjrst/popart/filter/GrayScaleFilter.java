@@ -11,6 +11,9 @@ import java.awt.image.BufferedImage;
  */
 public class GrayScaleFilter implements ImageFilter {
 
+	/**
+	 * Standardkonstruktor
+	 */
 	public GrayScaleFilter() {
 
 	}

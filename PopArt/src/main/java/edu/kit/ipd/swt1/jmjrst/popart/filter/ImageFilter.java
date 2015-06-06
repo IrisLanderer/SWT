@@ -2,6 +2,12 @@ package edu.kit.ipd.swt1.jmjrst.popart.filter;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * ein Interface für die Filter
+ * 
+ * @author Iris
+ *
+ */
 public interface ImageFilter {
 
 	/**
@@ -12,6 +18,14 @@ public interface ImageFilter {
 	 *            the image to be filtered
 	 * @return a new image with the filter applied
 	 */
-	public BufferedImage applyFilter(BufferedImage image);
+
+	/**
+	 * Methode, die den jeweiligen Filter auf dem Bild anwendet
+	 * 
+	 * @param image
+	 *            Bild
+	 * @return Bild, das mit Filter verändert wurde
+	 */
+	BufferedImage applyFilter(BufferedImage image);
 
 }

@@ -3,6 +3,12 @@ package edu.kit.ipd.swt1.jmjrst.popart.filter;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+/**
+ * KLasse für den Farbtausch
+ * 
+ * @author Iris
+ *
+ */
 public class RGBShift implements ImageFilter {
 
 	/**

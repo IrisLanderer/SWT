@@ -1,7 +1,11 @@
+import javax.swing.JOptionPane;
+
 import org.jis.Main;
 import org.jis.plugins.JmjrstPlugin;
 
 public class HalloJmjrstSwtPlugin extends JmjrstPlugin {
+
+	String name;
 
 	@Override
 	public String getMenuText() {
@@ -11,19 +15,18 @@ public class HalloJmjrstSwtPlugin extends JmjrstPlugin {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.name;
 	}
 
 	@Override
 	public void init(Main main) {
-		// TODO Auto-generated method stub
+		System.out.println("Bitte konfiguriere mich!");
 
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		System.err.println("Ich wurde noch nicht implementiert!");
 
 	}
 
@@ -35,8 +38,7 @@ public class HalloJmjrstSwtPlugin extends JmjrstPlugin {
 
 	@Override
 	public void configure() {
-		// TODO Auto-generated method stub
-
+		JOptionPane.showMessageDialog(null, getName());
 	}
 
 }

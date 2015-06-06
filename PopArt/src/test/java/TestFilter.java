@@ -139,7 +139,7 @@ public class TestFilter {
 
 	@Test
 	public void testGreenBlueRed() {
-		RGBShift filter = new RGBShift(green, blue, red);
+		RGBShift filter = new RGBShift(blue, red, green);
 		filter.applyFilter(image);
 		int width = image.getWidth();
 		int height = image.getHeight();
@@ -167,7 +167,7 @@ public class TestFilter {
 
 	@Test
 	public void testRedBlueGreen() {
-		RGBShift filter = new RGBShift(green, blue, red);
+		RGBShift filter = new RGBShift(red, blue, green);
 		filter.applyFilter(image);
 		int width = image.getWidth();
 		int height = image.getHeight();
@@ -187,7 +187,7 @@ public class TestFilter {
 
 				Assert.assertEquals(oldAlpha, newAlpha);
 				Assert.assertEquals(oldGreen, newBlue);
-				Assert.assertEquals(oldBlue, newBlue);
+				Assert.assertEquals(oldBlue, newGreen);
 				Assert.assertEquals(oldRed, newRed);
 			}
 		}
@@ -195,7 +195,7 @@ public class TestFilter {
 
 	@Test
 	public void testGreenRedBlue() {
-		RGBShift filter = new RGBShift(green, blue, red);
+		RGBShift filter = new RGBShift(green, red, blue);
 		filter.applyFilter(image);
 		int width = image.getWidth();
 		int height = image.getHeight();
@@ -223,7 +223,7 @@ public class TestFilter {
 
 	@Test
 	public void testBlueGreenRed() {
-		RGBShift filter = new RGBShift(green, blue, red);
+		RGBShift filter = new RGBShift(blue, green, red);
 		filter.applyFilter(image);
 		int width = image.getWidth();
 		int height = image.getHeight();
@@ -254,7 +254,7 @@ public class TestFilter {
 		BufferedImage oldImage = ImageIO.read(new File(
 				"src/test/resources/image.png"));
 		BufferedImage newImage = new BlurFilter().applyFilter(oldImage);
-		ImageIO.write(newImage, "png", new File("src/test/resources/image.png"));
+		ImageIO.write(newImage, "png", new File("src/test/resources/blur.png"));
 	}
 
 	@Test
@@ -262,7 +262,7 @@ public class TestFilter {
 		BufferedImage oldImage = ImageIO.read(new File(
 				"src/test/resources/image.png"));
 		BufferedImage newImage = new SepiaFilter().applyFilter(oldImage);
-		ImageIO.write(newImage, "png", new File("src/test/resources/image.png"));
+		ImageIO.write(newImage, "png", new File("src/test/resources/sepia.png"));
 	}
 
 	@Test
@@ -270,7 +270,7 @@ public class TestFilter {
 		BufferedImage oldImage = ImageIO.read(new File(
 				"src/test/resources/image.png"));
 		BufferedImage newImage = new GrayScaleFilter().applyFilter(oldImage);
-		ImageIO.write(newImage, "png", new File("src/test/resources/image.png"));
+		ImageIO.write(newImage, "png", new File("src/test/resources/grey.png"));
 	}
 
 	@Test
@@ -278,7 +278,7 @@ public class TestFilter {
 		BufferedImage oldImage = ImageIO.read(new File(
 				"src/test/resources/image.png"));
 		BufferedImage newImage = new RGBShift().applyFilter(oldImage);
-		ImageIO.write(newImage, "png", new File("src/test/resources/image.png"));
+		ImageIO.write(newImage, "png", new File("src/test/resources/rgb.png"));
 	}
 
 	@Test
@@ -287,7 +287,7 @@ public class TestFilter {
 				"src/test/resources/image.png"));
 		BufferedImage newImage = new RGBShift(Channel.BLUE, Channel.RED,
 				Channel.GREEN).applyFilter(oldImage);
-		ImageIO.write(newImage, "png", new File("src/test/resources/image.png"));
+		ImageIO.write(newImage, "png", new File("src/test/resources/brg.png"));
 	}
 
 	@Test
@@ -296,7 +296,7 @@ public class TestFilter {
 				"src/test/resources/image.png"));
 		BufferedImage newImage = new RGBShift(Channel.RED, Channel.BLUE,
 				Channel.GREEN).applyFilter(oldImage);
-		ImageIO.write(newImage, "png", new File("src/test/resources/image.png"));
+		ImageIO.write(newImage, "png", new File("src/test/resources/rbg.png"));
 	}
 
 	@Test
@@ -305,7 +305,7 @@ public class TestFilter {
 				"src/test/resources/image.png"));
 		BufferedImage newImage = new RGBShift(Channel.GREEN, Channel.RED,
 				Channel.BLUE).applyFilter(oldImage);
-		ImageIO.write(newImage, "png", new File("src/test/resources/image.png"));
+		ImageIO.write(newImage, "png", new File("src/test/resources/grb.png"));
 	}
 
 	@Test
@@ -314,6 +314,6 @@ public class TestFilter {
 				"src/test/resources/image.png"));
 		BufferedImage newImage = new RGBShift(Channel.BLUE, Channel.GREEN,
 				Channel.RED).applyFilter(oldImage);
-		ImageIO.write(newImage, "png", new File("src/test/resources/image.png"));
+		ImageIO.write(newImage, "png", new File("src/test/resources/bgr.png"));
 	}
 }
