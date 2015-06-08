@@ -5,6 +5,8 @@ import java.awt.Container;
 
 import javax.swing.JFrame;
 
+import edu.kit.ipd.swt1.jmjrst.popart.SimplePopArtCollage;
+
 public class GUI {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Pop-Art-Collage");
@@ -12,8 +14,9 @@ public class GUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Components component = new Components();
 		Container container = frame.getContentPane();
-		container.add(new CollagePanel(), BorderLayout.WEST);
-		component.addComponents(container);
+		container.add(new CollagePanel(), BorderLayout.SOUTH);
+		SimplePopArtCollage popart = new SimplePopArtCollage();
+		component.addComponents(container, popart);
 		frame.setVisible(true);
 	}
 }

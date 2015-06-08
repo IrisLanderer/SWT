@@ -2,12 +2,16 @@ package src.main.java;
 
 import java.awt.ComponentOrientation;
 import java.awt.Container;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -15,9 +19,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.kit.ipd.swt1.jmjrst.popart.SimplePopArtCollage;
+
 public class Components {
 
-	public void addComponents(Container pane) {
+	public void addComponents(Container pane, final SimplePopArtCollage popart) {
 		pane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
 		pane.setLayout(new GridBagLayout());
@@ -29,23 +35,28 @@ public class Components {
 		c.weightx = 0.5;
 		c.gridx = 0;
 		c.gridy = 0;
-		c.gridwidth = GridBagConstraints.RELATIVE;
+		c.gridwidth = 2;
+		// c.insets = new Insets(30, 30, 30, 30);
 		pane.add(load, c);
 
+		c = new GridBagConstraints();
 		JButton save = new JButton("Datei speichern");
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.5;
 		c.gridx = 2;
 		c.gridy = 0;
 		c.gridwidth = 2;
+		// c.insets = new Insets(30, 30, 30, 30);
 		pane.add(save, c);
 
+		// c = new GridBagConstraints();
 		JButton preview = new JButton("Vorschau");
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.5;
 		c.gridx = 2;
 		c.gridy = 1;
-		c.gridwidth = 2;
+		// c.insets = new Insets(30, 30, 30, 30);
+		// c.gridwidth = 2;
 		pane.add(preview, c);
 
 		JLabel collage = new JLabel("Collage:");
@@ -59,21 +70,21 @@ public class Components {
 
 		final JPanel collagePanel = new CollagePanel();
 		final JLabel collageLabel = new JLabel();
-		c.fill = GridBagConstraints.VERTICAL;
-		c.anchor = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.5;
-		c.gridx = 0;
+		c.gridx = 1;
 		c.gridy = 2;
-		c.gridwidth = 3;
-		c.gridheight = 3;
+		// c.gridwidth = 2;
+		// c.gridheight = 2;
 		collagePanel.add(collageLabel);
 		pane.add(collagePanel, c);
 
-		JTextField field = new JTextField(10);
+		final JTextField field = new JTextField(10);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.5;
 		c.gridx = 1;
 		c.gridy = 1;
+		c.gridwidth = 1;
 		pane.add(field, c);
 
 		load.addActionListener(new ActionListener() {
@@ -84,27 +95,61 @@ public class Components {
 				int value = chooser.showOpenDialog(null);
 				if (value == JFileChooser.APPROVE_OPTION) {
 					File file = chooser.getSelectedFile();
+					BufferedImage image;
+					try {
+						image = ImageIO.read(file);
+						BufferedImage collage;
+						if (field.getText().equals("")) {
+							collage = popart.getCollage(image, "ogsw12345");
+						} else {
+							collage = popart.getCollage(image, field.getText());
+						}
+						BufferedImage resizedImage = resizeImage(collage);
+						ImageIcon icon = new ImageIcon(resizedImage);
+						collageLabel.setIcon(icon);
+					} catch (IOException e1) {
+						System.out
+								.println("Bei dieser Datei handelt es sich nicht um ein Bild!");
+						e1.printStackTrace();
+					}
 
-					ImageIcon icon = new ImageIcon(file.getPath());
+				}
+			}
+		});
+		save.addActionListener(new ActionListener() {
 
-					collageLabel.setIcon(icon);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final JFileChooser chooser = new JFileChooser();
+				int value = chooser.showSaveDialog(null);
+				if (value == JFileChooser.APPROVE_OPTION) {
+					File file = chooser.getSelectedFile();
+					// BufferedImage image;
+					// try {
+					// image = ImageIO.read(file);
+					// File outputfile = new File(
+					// "src/main/resources/collage.jpg");
+					// ImageIO.write(image, "jpg", outputfile);
+					// } catch (IOException e1) {
+					// System.out
+					// .println("Bei dieser Datei handelt es sich nicht um ein Bild!");
+					// e1.printStackTrace();
+					// }
+
 				}
 			}
 		});
 
-		// save.addActionListener(new ActionListener() {
-		//
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// final JFileChooser chooser = new JFileChooser();
-		// int value = chooser.showSaveDialog(null);
-		// if (value == JFileChooser.APPROVE_OPTION) {
-		// File file = chooser.getSelectedFile();
-		// ImageIO.write(collage, "jpg", new File(file.getPath()));
-		// }
-		// }
-		// });
+	}
 
+	private static BufferedImage resizeImage(BufferedImage originalImage) {
+		BufferedImage resizedImage = new BufferedImage(600, 600,
+				originalImage.getType());
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(originalImage, 0, 0, 600, 600, null);
+		g.dispose();
+
+		return resizedImage;
 	}
 
 }
