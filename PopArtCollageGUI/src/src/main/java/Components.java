@@ -18,12 +18,24 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import edu.kit.ipd.swt1.jmjrst.popart.SimplePopArtCollage;
 
 public class Components {
 
-	public void addComponents(Container pane, final SimplePopArtCollage popart) {
+	SimplePopArtCollage popart;
+
+	private BufferedImage currentImage;
+
+	private BufferedImage currentCollage;
+
+	public Components(SimplePopArtCollage popart) {
+		this.popart = popart;
+	}
+
+	public void addComponents(Container pane) {
+
 		pane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
 		pane.setLayout(new GridBagLayout());
@@ -78,6 +90,9 @@ public class Components {
 		// c.gridheight = 2;
 		collagePanel.add(collageLabel);
 		pane.add(collagePanel, c);
+		File file = new File("src/main/resources/Yoda.jpg");
+		System.out.println(file.exists());
+		readCollage(collageLabel, null, file);
 
 		final JTextField field = new JTextField(10);
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -92,27 +107,26 @@ public class Components {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser chooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+						"jpg", "png");
+				chooser.setFileFilter(filter);
 				int value = chooser.showOpenDialog(null);
 				if (value == JFileChooser.APPROVE_OPTION) {
 					File file = chooser.getSelectedFile();
-					BufferedImage image;
-					try {
-						image = ImageIO.read(file);
-						BufferedImage collage;
-						if (field.getText().equals("")) {
-							collage = popart.getCollage(image, "ogsw12345");
-						} else {
-							collage = popart.getCollage(image, field.getText());
-						}
-						BufferedImage resizedImage = resizeImage(collage);
-						ImageIcon icon = new ImageIcon(resizedImage);
-						collageLabel.setIcon(icon);
-					} catch (IOException e1) {
-						System.out
-								.println("Bei dieser Datei handelt es sich nicht um ein Bild!");
-						e1.printStackTrace();
-					}
+					readCollage(collageLabel, field, file);
+				}
+			}
+		});
+		preview.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (currentCollage != null) {
+					BufferedImage collage = testOptionValue(currentImage,
+							field.getText());
+					BufferedImage resizedImage = resizeImage(collage);
+					collageLabel.setIcon(new ImageIcon(resizedImage));
+					currentCollage = resizedImage;
 				}
 			}
 		});
@@ -121,24 +135,53 @@ public class Components {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser chooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+						"jpg", "png");
+				chooser.setFileFilter(filter);
 				int value = chooser.showSaveDialog(null);
 				if (value == JFileChooser.APPROVE_OPTION) {
 					File file = chooser.getSelectedFile();
-					// BufferedImage image;
-					// try {
-					// image = ImageIO.read(file);
-					// File outputfile = new File(
-					// "src/main/resources/collage.jpg");
-					// ImageIO.write(image, "jpg", outputfile);
-					// } catch (IOException e1) {
-					// System.out
-					// .println("Bei dieser Datei handelt es sich nicht um ein Bild!");
-					// e1.printStackTrace();
-					// }
-
+					String[] fileNameParts = file.getName().split("\\.");
+					try {
+						ImageIO.write(currentCollage,
+								fileNameParts[fileNameParts.length - 1], file);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
+	}
+
+	private void readCollage(final JLabel collageLabel, final JTextField field,
+			File file) {
+		try {
+			currentImage = ImageIO.read(file);
+			BufferedImage collage = testOptionValue(currentImage,
+					field != null ? field.getText() : "");
+			BufferedImage resizedImage = resizeImage(collage);
+			collageLabel.setIcon(new ImageIcon(resizedImage));
+			currentCollage = resizedImage;
+		} catch (IOException e1) {
+			System.out
+					.println("Bei dieser Datei handelt es sich nicht um ein Bild!");
+			e1.printStackTrace();
+		}
+	}
+
+	private BufferedImage testOptionValue(BufferedImage image,
+			String optionValue) {
+		BufferedImage popArtCollage;
+		if (optionValue.equals("")) {
+			popArtCollage = popart.getCollage(image, "ogsw12345");
+		} else if (optionValue.matches("[ogsw12345]")) {
+			popArtCollage = popart.getCollage(image, optionValue);
+
+		} else {
+			throw new IllegalArgumentException("Ungueltiges Muster!");
+		}
+
+		return popArtCollage;
 
 	}
 

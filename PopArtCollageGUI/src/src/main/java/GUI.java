@@ -12,11 +12,11 @@ public class GUI {
 		JFrame frame = new JFrame("Pop-Art-Collage");
 		frame.setSize(800, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Components component = new Components();
+		SimplePopArtCollage popart = new SimplePopArtCollage();
+		Components component = new Components(popart);
 		Container container = frame.getContentPane();
 		container.add(new CollagePanel(), BorderLayout.SOUTH);
-		SimplePopArtCollage popart = new SimplePopArtCollage();
-		component.addComponents(container, popart);
+		component.addComponents(container);
 		frame.setVisible(true);
 	}
 }
